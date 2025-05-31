@@ -33,6 +33,21 @@ export class OneVault implements Contract {
             body: beginCell().endCell(),
         });
     }
+    
+  async sendUpgrade(provider: ContractProvider, via: Sender, value: bigint, code: Cell) {
+        await provider.internal(via, {
+            value,
+            sendMode: SendMode.PAY_GAS_SEPARATELY,
+            body: beginCell().storeUint(0, 32).storeUint(0, 64).storeRef(code).endCell(),
+        });
+    }
+  async depositUsdt(provider: ContractProvider, via: Sender, value: bigint, code: Cell) {
+        await provider.internal(via, {
+            value,
+            sendMode: SendMode.PAY_GAS_SEPARATELY,
+            body: beginCell().storeUint(0, 32).storeUint(0, 64).storeRef(code).endCell(),
+        });
+    }
 
     async sendIncrease(
         provider: ContractProvider,

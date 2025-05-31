@@ -9,7 +9,8 @@
         "release": "blueprint pack && npm publish --access public"
     },
     "dependencies": {
-        "@ton/core": "~0"
+        "@ton/core": "^0.60.1",
+        "Buffer": "^0.0.0"
     },
     "devDependencies": {
         "@tact-lang/compiler": ">=1.6.10 <2.0.0",

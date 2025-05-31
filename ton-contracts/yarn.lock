@@ -970,7 +970,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ton/core@npm:0.60.1, @ton/core@npm:^0.60.0, @ton/core@npm:~0":
+"@ton/core@npm:0.60.1, @ton/core@npm:^0.60.0, @ton/core@npm:^0.60.1":
   version: 0.60.1
   resolution: "@ton/core@npm:0.60.1"
   dependencies:
@@ -1259,6 +1259,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"Buffer@npm:^0.0.0":
+  version: 0.0.0
+  resolution: "Buffer@npm:0.0.0"
+  checksum: 10c0/5c108d6f3cb13e13043c3ad839ac76d6c432231e74836fe68b58e701b4c9460ea5366e9f3a8c52b9ecc21cbdeb71d9ed978dcf46053222e828f12c80dbfc05ef
+  languageName: node
+  linkType: hard
+
 "OneVault@workspace:.":
   version: 0.0.0-use.local
   resolution: "OneVault@workspace:."
@@ -1266,7 +1273,7 @@ __metadata:
     "@tact-lang/compiler": "npm:>=1.6.10 <2.0.0"
     "@ton-community/func-js": "npm:>=0.9.1"
     "@ton/blueprint": "npm:>=0.34.0"
-    "@ton/core": "npm:~0"
+    "@ton/core": "npm:^0.60.1"
     "@ton/crypto": "npm:^3.3.0"
     "@ton/sandbox": "npm:>=0.31.0"
     "@ton/test-utils": "npm:>=0.6.0"
@@ -1274,6 +1281,7 @@ __metadata:
     "@ton/ton": "npm:>=15.2.1 <16.0.0"
     "@types/jest": "npm:^29.5.14"
     "@types/node": "npm:^22.14.1"
+    Buffer: "npm:^0.0.0"
     jest: "npm:^29.7.0"
     prettier: "npm:^3.5.3"
     ts-jest: "npm:^29.3.2"

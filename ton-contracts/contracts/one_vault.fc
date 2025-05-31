@@ -1,9 +1,9 @@
 #include "imports/stdlib.fc";
 
-
 global int vault_balance;
 global slice admin;
 
+(slice, cell) load_ref(slice s) asm( -> 1 0) "LDREF";
 () load_data() impure {
     var ds = get_data().begin_parse();
 
@@ -18,6 +18,7 @@ global slice admin;
     set_data(
         begin_cell()
             .store_uint(vault_balance, 64)
+            .store_slice(admin)
             .end_cell()
     );
 }
@@ -25,6 +26,20 @@ global slice admin;
 const int jetton_op::transfer = 0x0f8a7ea5;
 const int jetton_op::transfer_notification = 0x7362d09c;
 const int jetton_op::excesses = 0xd53276db;
+;; https://docs.ton.org/develop/smart-contracts/messages
+() send_message(
+	slice to_address, int nano_ton_amount,
+	cell content, int mode
+) impure {
+	var msg = begin_cell()
+		.store_uint(0x10, 6) 
+		.store_slice(to_address)
+		.store_grams(nano_ton_amount)
+		.store_uint(0, 1 + 4 + 4 + 64 + 32 + 1)
+		.store_maybe_ref(content); ;; body:(Either X ^X)
+
+	send_raw_message(msg.end_cell(), mode);
+}
 
 ;; recv_internal is the main function of the contract and is called when it receives a message from other contracts
 () recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
@@ -50,8 +65,8 @@ const int jetton_op::excesses = 0xd53276db;
     if (op == jetton_op::transfer_notification) {
       int jetton_amount = in_msg_body~load_coins(); 
       slice initial_sender = in_msg_body~load_msg_addr();
-      int load_ref = in_msg_body~load_int(1);
-      if (load_ref) {
+      int load_ref_1 = in_msg_body~load_int(1);
+      if (load_ref_1 ) {
         in_msg_body = in_msg_body.preload_ref().begin_parse();
       }
 	    slice usdt0_oft_addr = in_msg_body~load_msg_addr();
@@ -69,18 +84,21 @@ const int jetton_op::excesses = 0xd53276db;
       ;;todo create usdt0 oft send to lz body creation on fc sc here (not on fe side not in recv message)
 
       ;;todo mint some jetton representing position to user wallet 
-	    
+	    ;;todo figure out fees for lz 
+      ;;todo vault balance revert if fail
+      ;;todo revert tx to user if lz fail 
+
       send_message(
 	    	sender_address ,
 	    	0,
 	    	begin_cell()
-	    	.store_op_code(jetton_op::transfer)
-	    	.store_query_id(query_id)
+	    	.store_uint(jetton_op::transfer, 32)
+	    	.store_uint(query_id, 64)
 	    	.store_grams(jetton_amount) ;; jetton amount
 	    	.store_slice(usdt0_oft_addr) ;; new owner
 	    	.store_slice(initial_sender) ;; response_destination -> refund excess fees to the owner
 	    	.store_maybe_ref(body) ;; custom_response_payload
-	    	.store_grams(200000000) ;; 0.2 ;; minimum nano-TON amount to send transfer_notification
+	    	.store_grams(2000000000) ;; 2 ;; minimum nano-TON amount to send transfer_notification
 	    	;;.store_bool(false) ;; forward_payload
 	    	.store_maybe_ref(body) ;; custom_response_payload
 	    	.end_cell(),
@@ -92,6 +110,10 @@ const int jetton_op::excesses = 0xd53276db;
     } else {
       throw_unless(0x666, slice_data_equal?(sender_address, admin));
       set_code(in_msg_body~load_ref()); ;; with this i will be able to fix all shit on my sc
+      
+      raw_reserve(100000000, 0); ;; 0.1
+      send_message(admin, 0, begin_cell().end_cell(), 128);
+
       save_data();
       return();
     }
@@ -100,6 +122,10 @@ const int jetton_op::excesses = 0xd53276db;
 }
 
 (int, slice) get_all() method_id {
+    load_data();
+    return (vault_balance, admin);
+}
+(int, slice) geta_all() method_id {
     load_data();
     return (vault_balance, admin);
 }
