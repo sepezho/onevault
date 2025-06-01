@@ -144,7 +144,7 @@ let body = Cell.fromBoc(Buffer.from("b5ee9c724101020100860002ff0000004f465453656
       note: you will send 2.2ton for gas and other fees, part of it will be returned to you
       <br />
       <br />
-      created by <a href={"https://sepezho.com"}>sepezho</a>
+      created by <a href={"https://sepezh.ooo"}>sepezho</a>
     </div >
   )
 }
