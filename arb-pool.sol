@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-/* ───────────── External Interfaces ───────────── */
-
 interface ILayerZeroReceiver {
     function lzReceive(
         uint16 _srcChainId,
@@ -32,10 +30,8 @@ interface IPool {
     ) external returns (uint256);
 }
 
-/* ───────────── One-purpose vault (Arbitrum) ───────────── */
 
 contract LZ_OFT_AaveVault is ILayerZeroReceiver {
-    /* ---- hard-wired config for ARBITRUM ONE ---- */
     address public constant ADMIN       = 0xF6D2959525c4D01cf73Dd3f646480a77430D1F27;
     IERC20  public constant USDT        = IERC20(0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9);
     address public constant LZ_ENDPOINT = 0x1a44076050125825900e736c501f859c50fE728c;
@@ -51,17 +47,12 @@ contract LZ_OFT_AaveVault is ILayerZeroReceiver {
     }
 
     constructor() {
-        // one-time infinite allowance; wrapped in try/catch
         try USDT.approve(address(AAVE_POOL), type(uint256).max) {
-            /* ok */
         } catch {
-            // если staticcall при gas-estimate сревертит — просто игнорируем
         }
     }
 
-    /* ───────────── LayerZero hook ───────────── */
-
-    /// OFT-transfer → USDT зачислен → Endpoint вызывает lzReceive (payload пустой)
+    /// todo change oft send to oft send and execute on LZ , so we will be able to recv this message here 
     function lzReceive(
         uint16,           /* _srcChainId  */
         bytes calldata,   /* _srcAddress  */
@@ -77,9 +68,6 @@ contract LZ_OFT_AaveVault is ILayerZeroReceiver {
         emit Deposited(amt);
     }
 
-    /* ───────────── Admin ───────────── */
-
-    /// Забрать весь депозит + доход в кошелёк ADMIN
     function withdrawAll() external onlyAdmin {
         uint256 amt = AAVE_POOL.withdraw(address(USDT), type(uint256).max, ADMIN);
         emit Withdrawn(amt);

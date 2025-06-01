@@ -13,7 +13,7 @@ arb-pool.sol & eth-pool.sol - solidity contracts for arbitrum and eth for aave s
 fe folder - frontend app on react with ton connect can be integrated to telegram bot 
 <br/>
 <br/>
-bot folder - TMA telegram bot with web app 
+bot folder - TMA telegram bot with web app (forked / default bot project) 
 <br/>
 <br/>
 01.06.2025 sepezho 
