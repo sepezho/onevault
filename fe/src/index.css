@@ -1,0 +1,174 @@
+html {
+    background-color: #000;
+      color: #fff;
+      height: 100%; /* Full height of the viewport */
+}
+
+body {
+    margin: 0 !important;
+      height: 100%; /* Full height of the viewport */
+}
+
+.app {
+    position: relative;
+      width: 100%; /* Full width of the viewport */
+      height: 100%; /* Full height of the viewport */
+      min-height: 100%; /* Ensure it takes full height */
+}
+
+.logic {
+    text-align: center;
+      width: 100%; /* 90% of the parent width for margins */
+      margin: auto;
+      padding: 0 0 20px 0; /* Add some vertical spacing */
+}
+
+/* Container for the grid and button to manage layout independently */
+.grid-container {
+    width: 100%; /* 90% of the parent width for margins */
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+
+/* Position the "Connect Wallet" button */
+.connect-button {
+    margin: 10px 0; /* Add margin for spacing */
+      width: 200px; /* Fixed width for consistency, adjust as needed */
+      text-align: center;
+}
+
+/* Ensure the button stays visible and doesn’t cause overflow */
+#ton-connect-button {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px 0 0 0 ;
+    > div {
+    > tc-root {
+      > div {
+        border: none !important;
+        }
+    }
+  }
+    :hover {
+    button {
+      text-decoration: underline;
+        border-radius: 0;
+        border: 1px solid #fff;
+      }
+  }
+    button {
+    border-radius: 0;
+      background-color: #000;
+      border: 1px dashed #fff;
+      width: 100%; /* Full width of the button container */
+      padding: 10px; /* Add padding for better appearance */
+    }
+}
+
+.cells {
+    text-align: center;
+      width: 100%; /* Full width of the grid-container, independent of text */
+      max-width: 800px; /* Limit the text width to match the grid max width */
+      margin: auto;
+      padding: 0; /* Remove any default padding */
+      display: grid;
+      grid-template-columns: repeat(40, 1fr); /* 40 equal columns */
+      grid-template-rows: repeat(40, 1fr); /* 40 equal rows */
+      height: auto; /* Let the grid height adjust to content, but limit by container */
+      gap: 0.1%; /* Small gap as a percentage of the parent */
+}
+
+.update {
+  width: 200px;
+  /* Full width of the button container */
+  color: #fff;
+  border-radius: 0;
+      background-color: #000;
+      border: 1px dashed #fff;
+      padding: 10px; /* Add padding for better appearance */
+
+}
+/* Ensure all cells are perfect squares with fixed aspect ratio */
+.cell {
+    width: 100%; /* Fill the grid cell */
+      outline: 1px solid rgba(255, 255, 255, 0.15); /* Cell border */
+      background-color: transparent; /* Default background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative; /* For positioning content if needed */
+}
+
+/* Handle images and other content inside cells */
+.cell img {
+    width: 100%; /* Scale image to fill the cell */
+      height: 100%; /* Match the cell height */
+      object-fit: contain; /* Prevent image distortion, maintain aspect ratio */
+      position: absolute; /* Position image within the cell */
+      top: 0;
+      left: 0;
+}
+
+/* Ensure empty cells or cells with smaller graphics maintain the same height */
+.cell::after {
+    content: '';
+      display: block;
+      padding-bottom: 100%; /* Maintain square aspect ratio for empty cells */
+}
+
+/* Highlight selected cell */
+.selected {
+    outline: 2px solid rgba(255, 0, 0, 1);
+}
+
+
+/* Styling for other elements remains the same unless you want changes */
+p img {
+    width: 100px; /* Use percentage for image width relative to parent */
+}
+
+.addr {
+    text-decoration: underline;
+      cursor: pointer;
+}
+
+.addr_text {
+    position: absolute;
+      display: none;
+      margin: 0 0 0 1%; /* Use percentage for margin */
+}
+
+.addr:hover + .addr_text {
+    display: inline-block;
+}
+
+.update_text {
+    position: absolute;
+      display: none;
+}
+
+.update:hover + .update_text {
+    display: inline-block;
+}
+
+.mint_text {
+    position: absolute;
+      display: none;
+}
+
+.mint:hover + .mint_text {
+    display: inline-block;
+}
+
+#tc-widget-root {
+    tc-root {
+    display: contents;
+    }
+}
+
+a {
+    color: white;
+}

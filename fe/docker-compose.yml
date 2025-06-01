@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  2toncells:
+    container_name: 2toncells
+    image: sepezho/2toncells
+    ports:
+      - "8080:80"
+    restart: always
+  
+  watchtower:
+    container_name: watchtower_2toncells
+    image: containrrr/watchtower
+    environment:
+      - WATCHTOWER_CLEANUP=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 2toncells
+
+
